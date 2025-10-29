@@ -1,0 +1,14 @@
+[
+    {
+        "city": "Chennai",
+        "temp": 30,
+        "humidity": 79,
+        "weather": "Scattered clouds"
+    },
+    {
+        "city": "Adilabad",
+        "temp": 25,
+        "humidity": 88,
+        "weather": "Overcast clouds"
+    }
+]
