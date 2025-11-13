@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-50 dark:bg-gray-900">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>College Social – Internal Social Network</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:400,600,700&display=swap" />
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/framer-motion/dist/framer-motion.umd.js"></script>
+    <script>
+      // Simple dark/light mode toggle
+      function toggleTheme() {
+        document.documentElement.classList.toggle('dark');
+      }
+    </script>
+  </head>
+  <body class="font-inter min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-md py-3 px-6 flex items-center justify-between sticky top-0 z-50">
+      <div class="flex items-center space-x-3">
+        <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">College Social</span>
+        <span class="hidden sm:inline text-xs text-gray-400 dark:text-gray-500">Internal Social Network</span>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="#/feed" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Feed</a>
+        <a href="#/clubs" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Clubs</a>
+        <a href="#/messages" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Messages</a>
+        <a href="#/profile" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Profile</a>
+        <a href="#/admin" class="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium">Admin</a>
+        <button onclick="toggleTheme()" class="ml-2 p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-blue-100 dark:hover:bg-blue-900 transition">
+          <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path id="theme-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.07l-.71.71M21 12h-1M4 12H3m16.66 5.66l-.71-.71M4.05 4.93l-.71-.71" />
+          </svg>
+        </button>
+        <a href="#/login" class="ml-2 px-4 py-1 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition hidden sm:inline">Login</a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="app" class="flex-1 w-full max-w-5xl mx-auto py-8 px-2 sm:px-6 transition-all duration-300">
+      <!-- Content will be injected here by JS router -->
+    </main>
+
+    <!-- Simple Router and Demo Data -->
+    <script>
+      // Dummy data for demo
+      const mockUser = {
+        name: "KARTHIKEYAN",
+        photo: "C:\\Users\\KARTHIK\\Downloads\\22628329-bd90-450e-a9e7-e2eabc92b270.png",
+        department: "Computer Science",
+        year: "2rd Year",
+        bio: "Aspiring developer. Love to code and collaborate!",
+        clubs: ["Coding Club", "Photography"],
+      };
+
+      const mockPosts = [
+        {
+          id: 1,
+          author: "KARTHIKEYAN",
+          avatar: "C:\\Users\\KARTHIK\\Downloads\\22628329-bd90-450e-a9e7-e2eabc92b270.png",
+          time: "2h ago",
+          content: "Anyone has last year's DBMS notes? Please share! 📚",
+          image: "",
+          likes: 8,
+          comments: [
+            { user: "Rahul", text: "I have them, will DM you!", time: "1h ago" },
+            { user: "Priya", text: "Check the club drive.", time: "45m ago" }
+          ]
+        },
+        {
+          id: 2,
+          author: "Coding Club",
+          avatar: "C:\\Users\\KARTHIK\\Downloads\\cartoon-cute-school-boy-photo.jpg",
+          time: "1d ago",
+          content: "🚀 Hackathon registrations open! Join us this Saturday.",
+          image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80",
+          likes: 15,
+          comments: []
+        }
+      ];
+
+      const mockClubs = [
+        {
+          name: "Coding Club",
+          desc: "For all programming enthusiasts. Weekly meetups & hackathons.",
+          members: 120,
+          cover: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=400&q=80"
+        },
+        {
+          name: "Photography",
+          desc: "Capture moments, share tips, and go on photo walks.",
+          members: 60,
+          cover: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+        }
+      ];
+
+      const mockMessages = [
+        {
+          from: "Rahul",
+          avatar: "https://randomuser.me/api/portraits/men/45.jpg",
+          last: "Hey, are you coming to the club meet?",
+          time: "5m ago",
+          unread: true
+        },
+        {
+          from: "Priya",
+          avatar: "https://randomuser.me/api/portraits/women/65.jpg",
+          last: "Shared the notes in drive!",
+          time: "1h ago",
+          unread: false
+        }
+      ];
+
+      const mockEvents = [
+        { date: "2024-06-20", title: "Photography Walk", club: "Photography" },
+        { date: "2024-06-22", title: "Coding Hackathon", club: "Coding Club" }
+      ];
+
+      // Simple hash router
+      function render() {
+        const hash = location.hash || "#/login";
+        const app = document.getElementById('app');
+        if (hash.startsWith("#/login")) {
+          app.innerHTML = loginPage();
+        } else if (hash.startsWith("#/feed")) {
+          app.innerHTML = feedPage();
+        } else if (hash.startsWith("#/profile")) {
+          app.innerHTML = profilePage();
+        } else if (hash.startsWith("#/clubs")) {
+          app.innerHTML = clubsPage();
+        } else if (hash.startsWith("#/messages")) {
+          app.innerHTML = messagesPage();
+        } else if (hash.startsWith("#/admin")) {
+          app.innerHTML = adminPage();
+        } else {
+          app.innerHTML = feedPage();
+        }
+      }
+
+      window.addEventListener('hashchange', render);
+      window.addEventListener('DOMContentLoaded', render);
+
+      // --- Page Components ---
+
+      function loginPage() {
+        return `
+        <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mt-12">
+          <h2 class="text-2xl font-bold text-center text-blue-600 dark:text-blue-400 mb-6">Welcome to College Social</h2>
+          <form class="space-y-4">
+            <div>
+              <label class="block text-gray-700 dark:text-gray-200 mb-1">Email</label>
+              <input type="email" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="student@college.edu" />
+            </div>
+            <div>
+              <label class="block text-gray-700 dark:text-gray-200 mb-1">Password</label>
+              <input type="password" class="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="••••••••" />
+            </div>
+            <button type="submit" onclick="location.hash='#/feed';return false;" class="w-full py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">Login</button>
+            <button type="button" onclick="location.hash='#/feed';return false;" class="w-full py-2 rounded bg-red-500 text-white font-semibold hover:bg-red-600 transition flex items-center justify-center space-x-2">
+              <svg class="w-5 h-5" viewBox="0 0 48 48"><g><circle fill="#fff" cx="24" cy="24" r="24"/><path fill="#4285F4" d="M35.6 24.2c0-.7-.1-1.4-.2-2H24v4.1h6.6c-.3 1.5-1.3 2.7-2.6 3.5v2.9h4.2c2.5-2.3 3.9-5.7 3.9-9.5z"/><path fill="#34A853" d="M24 36c3.2 0 5.8-1.1 7.7-2.9l-4.2-2.9c-1.2.8-2.7 1.3-4.4 1.3-3.4 0-6.2-2.3-7.2-5.3h-4.3v3.1C14.7 33.7 19 36 24 36z"/><path fill="#FBBC05" d="M16.8 26.2c-.3-.8-.5-1.7-.5-2.7s.2-1.9.5-2.7v-3.1h-4.3C11.7 20.3 11 22.1 11 24s.7 3.7 1.5 5.3l4.3-3.1z"/><path fill="#EA4335" d="M24 17.9c1.7 0 3.2.6 4.4 1.7l3.3-3.3C29.8 14.1 27.2 13 24 13c-5 0-9.3 2.3-11.8 5.9l4.3 3.1c1-3 3.8-5.3 7.2-5.3z"/></g></svg>
+              <span>Login with Google</span>
+            </button>
+          </form>
+          <p class="text-center text-xs text-gray-400 dark:text-gray-500 mt-4">Only for students of <span class="font-semibold">Your College</span></p>
+        </div>
+        `;
+      }
+
+      function feedPage() {
+        return `
+        <div class="flex flex-col md:flex-row gap-8">
+          <!-- Left: Newsfeed -->
+          <div class="flex-1">
+            <div class="mb-6">
+              <form class="bg-white dark:bg-gray-800 rounded-xl shadow p-4 flex items-center space-x-3">
+                <img src="${mockUser.photo}" class="w-10 h-10 rounded-full border-2 border-blue-400" />
+                <input type="text" class="flex-1 px-3 py-2 rounded bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:outline-none" placeholder="Share an update, note, or announcement..." />
+                <button type="submit" class="px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">Post</button>
+              </form>
+            </div>
+            <div class="space-y-6">
+              ${mockPosts.map(post => `
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-5 transition hover:shadow-lg">
+                  <div class="flex items-center space-x-3 mb-2">
+                    <img src="${post.avatar}" class="w-9 h-9 rounded-full border-2 border-blue-400" />
+                    <div>
+                      <div class="font-semibold text-gray-800 dark:text-gray-100">${post.author}</div>
+                      <div class="text-xs text-gray-400">${post.time}</div>
+                    </div>
+                  </div>
+                  <div class="text-gray-700 dark:text-gray-200 mb-2">${post.content}</div>
+                  ${post.image ? `<img src="${post.image}" class="rounded-lg mb-2 max-h-48 object-cover w-full" />` : ""}
+                  <div class="flex items-center space-x-4 text-gray-500 dark:text-gray-400 text-sm">
+                    <button class="flex items-center space-x-1 hover:text-blue-600">
+                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/></svg>
+                      <span>${post.likes}</span>
+                    </button>
+                    <span class="flex items-center space-x-1">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8l-4 1 1-4A8.96 8.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                      <span>${post.comments.length}</span>
+                    </span>
+                  </div>
+                  <div class="mt-3 space-y-2">
+                    ${post.comments.map(c => `
+                      <div class="flex items-center space-x-2 text-sm">
+                        <span class="font-semibold text-blue-600 dark:text-blue-400">${c.user}</span>
+                        <span class="text-gray-600 dark:text-gray-300">${c.text}</span>
+                        <span class="text-xs text-gray-400 ml-auto">${c.time}</span>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          <!-- Right: Events & Leaderboard -->
+          <div class="w-full md:w-72 flex-shrink-0 space-y-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
+              <div class="font-semibold text-gray-700 dark:text-gray-200 mb-2">Upcoming Events</div>
+              <ul class="space-y-2">
+                ${mockEvents.map(ev => `
+                  <li class="flex items-center space-x-2">
+                    <span class="text-blue-600 dark:text-blue-400 font-bold">${ev.date.slice(5)}</span>
+                    <span class="text-gray-700 dark:text-gray-200">${ev.title}</span>
+                    <span class="ml-auto text-xs text-gray-400">${ev.club}</span>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
+              <div class="font-semibold text-gray-700 dark:text-gray-200 mb-2">Leaderboard</div>
+              <ol class="list-decimal ml-5 text-gray-700 dark:text-gray-200">
+                <li>Aditi Sharma <span class="text-xs text-blue-500">(Coding Club)</span></li>
+                <li>Rahul Verma <span class="text-xs text-green-500">(Photography)</span></li>
+                <li>Priya Singh <span class="text-xs text-purple-500">(Literature)</span></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        `;
+      }
+
+      function profilePage() {
+        return `
+        <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+          <div class="flex items-center space-x-6">
+            <img src="${mockUser.photo}" class="w-24 h-24 rounded-full border-4 border-blue-400 shadow" />
+            <div>
+              <div class="text-2xl font-bold text-gray-800 dark:text-gray-100">${mockUser.name}</div>
+              <div class="text-gray-500 dark:text-gray-400">${mockUser.department} • ${mockUser.year}</div>
+              <div class="mt-2 text-gray-700 dark:text-gray-200">${mockUser.bio}</div>
+              <div class="mt-3 flex space-x-2">
+                ${mockUser.clubs.map(club => `<span class="px-2 py-1 rounded bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs">${club}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+          <div class="mt-8">
+            <h3 class="font-semibold text-gray-700 dark:text-gray-200 mb-2">My Posts</h3>
+            <div class="space-y-4">
+              ${mockPosts.filter(p => p.author === mockUser.name).map(post => `
+                <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 shadow">
+                  <div class="text-gray-700 dark:text-gray-200">${post.content}</div>
+                  <div class="flex items-center space-x-4 text-xs text-gray-400 mt-2">
+                    <span>${post.time}</span>
+                    <span>Likes: ${post.likes}</span>
+                    <span>Comments: ${post.comments.length}</span>
+                  </div>
+                </div>
+              `).join('') || `<div class="text-gray-400">No posts yet.</div>`}
+            </div>
+          </div>
+        </div>
+        `;
+      }
+
+      function clubsPage() {
+        return `
+        <div>
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Clubs & Communities</h2>
+            <button class="px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">+ Create Club</button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            ${mockClubs.map(club => `
+              <div class="bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg transition overflow-hidden">
+                <img src="${club.cover}" class="w-full h-32 object-cover" />
+                <div class="p-4">
+                  <div class="font-semibold text-lg text-gray-800 dark:text-gray-100">${club.name}</div>
+                  <div class="text-gray-500 dark:text-gray-400 text-sm mb-2">${club.desc}</div>
+                  <div class="flex items-center space-x-2 text-xs text-gray-400">
+                    <span>${club.members} members</span>
+                    <span class="ml-auto">
+                      <button class="px-3 py-1 rounded bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-semibold hover:bg-blue-200 dark:hover:bg-blue-800 transition">Join</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        `;
+      }
+
+      function messagesPage() {
+        return `
+        <div class="flex flex-col md:flex-row gap-8">
+          <!-- Sidebar: Chats -->
+          <div class="w-full md:w-72 bg-white dark:bg-gray-800 rounded-xl shadow p-4">
+            <div class="font-semibold text-gray-700 dark:text-gray-200 mb-3">Chats</div>
+            <ul class="space-y-3">
+              ${mockMessages.map(msg => `
+                <li class="flex items-center space-x-3 p-2 rounded hover:bg-blue-50 dark:hover:bg-blue-900 transition cursor-pointer ${msg.unread ? 'bg-blue-50 dark:bg-blue-900' : ''}">
+                  <img src="${msg.avatar}" class="w-10 h-10 rounded-full border-2 border-blue-400" />
+                  <div class="flex-1">
+                    <div class="font-semibold text-gray-800 dark:text-gray-100">${msg.from}</div>
+                    <div class="text-xs text-gray-400">${msg.last}</div>
+                  </div>
+                  ${msg.unread ? `<span class="w-2 h-2 rounded-full bg-blue-500"></span>` : ''}
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+          <!-- Main: Chat Window -->
+          <div class="flex-1 bg-white dark:bg-gray-800 rounded-xl shadow p-6 flex flex-col">
+            <div class="flex items-center space-x-3 mb-4">
+              <img src="https://randomuser.me/api/portraits/men/45.jpg" class="w-10 h-10 rounded-full border-2 border-blue-400" />
+              <div>
+                <div class="font-semibold text-gray-800 dark:text-gray-100">Rahul</div>
+                <div class="text-xs text-gray-400">Online</div>
+              </div>
+            </div>
+            <div class="flex-1 overflow-y-auto space-y-3 mb-4">
+              <div class="flex items-end space-x-2">
+                <img src="${mockUser.photo}" class="w-8 h-8 rounded-full" />
+                <div class="bg-blue-100 dark:bg-blue-900 text-gray-800 dark:text-gray-100 rounded-lg px-4 py-2">Hey Rahul! Yes, I'll be there.</div>
+              </div>
+              <div class="flex items-end space-x-2 justify-end">
+                <div class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100 rounded-lg px-4 py-2">Great! See you at 5pm in Lab 2.</div>
+                <img src="https://randomuser.me/api/portraits/men/45.jpg" class="w-8 h-8 rounded-full" />
+              </div>
+            </div>
+            <form class="flex items-center space-x-2">
+              <input type="text" class="flex-1 px-3 py-2 rounded bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:outline-none" placeholder="Type a message..." />
+              <button type="submit" class="px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">Send</button>
+            </form>
+          </div>
+        </div>
+        `;
+      }
+
+      function adminPage() {
+        return `
+        <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Admin Panel</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-blue-100 dark:bg-blue-900 rounded-lg p-4 text-center">
+              <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">320</div>
+              <div class="text-gray-700 dark:text-gray-200">Users</div>
+            </div>
+            <div class="bg-green-100 dark:bg-green-900 rounded-lg p-4 text-center">
+              <div class="text-3xl font-bold text-green-600 dark:text-green-400">8</div>
+              <div class="text-gray-700 dark:text-gray-200">Clubs</div>
+            </div>
+            <div class="bg-purple-100 dark:bg-purple-900 rounded-lg p-4 text-center">
+              <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">120</div>
+              <div class="text-gray-700 dark:text-gray-200">Posts</div>
+            </div>
+          </div>
+          <div class="mb-6">
+            <h3 class="font-semibold text-gray-700 dark:text-gray-200 mb-2">Manage Users</h3>
+            <table class="w-full text-left text-sm">
+              <thead>
+                <tr>
+                  <th class="py-2">Name</th>
+                  <th class="py-2">Department</th>
+                  <th class="py-2">Year</th>
+                  <th class="py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-t border-gray-200 dark:border-gray-700">
+                  <td class="py-2">Aditi Sharma</td>
+                  <td class="py-2">Computer Science</td>
+                  <td class="py-2">3rd</td>
+                  <td class="py-2">
+                    <button class="px-2 py-1 rounded bg-red-500 text-white text-xs hover:bg-red-600">Remove</button>
+                  </td>
+                </tr>
+                <tr class="border-t border-gray-200 dark:border-gray-700">
+                  <td class="py-2">Rahul Verma</td>
+                  <td class="py-2">Electronics</td>
+                  <td class="py-2">2nd</td>
+                  <td class="py-2">
+                    <button class="px-2 py-1 rounded bg-red-500 text-white text-xs hover:bg-red-600">Remove</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-700 dark:text-gray-200 mb-2">Manage Clubs</h3>
+            <ul class="space-y-2">
+              <li class="flex items-center space-x-2">
+                <span class="font-semibold text-blue-600 dark:text-blue-400">Coding Club</span>
+                <span class="text-xs text-gray-400">120 members</span>
+                <button class="ml-auto px-2 py-1 rounded bg-red-500 text-white text-xs hover:bg-red-600">Delete</button>
+              </li>
+              <li class="flex items-center space-x-2">
+                <span class="font-semibold text-green-600 dark:text-green-400">Photography</span>
+                <span class="text-xs text-gray-400">60 members</span>
+                <button class="ml-auto px-2 py-1 rounded bg-red-500 text-white text-xs hover:bg-red-600">Delete</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        `;
+      }
+    </script>
+  </body>
+</html>
