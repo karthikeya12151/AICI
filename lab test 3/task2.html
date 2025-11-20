@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Digital Clock</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #232526, #414345);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+    .clock-container {
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 4px 32px 0 rgba(0,0,0,0.35);
+      border-radius: 24px;
+      padding: 48px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .clock-title {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #ffefba;
+      font-size: 2.1rem;
+      letter-spacing: 2px;
+      margin-bottom: 26px;
+      text-shadow: 1px 2px 8px #41434580;
+    }
+    #clock {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 3.7rem;
+      color: #00ffc6;
+      background: rgba(46, 49, 56, 0.7);
+      padding: 22px 42px;
+      border-radius: 18px;
+      letter-spacing: 4px;
+      box-shadow: 0 2px 20px 0 #23252661;
+      transition: color 0.4s;
+    }
+
+    @media (max-width: 500px) {
+      .clock-container {
+        padding: 24px 6vw;
+      }
+      #clock {
+        font-size: 2.1rem;
+        padding: 12px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="clock-container">
+    <div class="clock-title">Digital Clock</div>
+    <div id="clock">--:--:-- --</div>
+  </div>
+  <script>
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12;
+      hours = hours ? hours : 12; // 0 should be displayed as 12
+
+      const pad = (n) => n.toString().padStart(2, '0');
+      const timeString = `${pad(hours)}:${pad(minutes)}:${pad(seconds)} ${ampm}`;
+      document.getElementById('clock').textContent = timeString;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
